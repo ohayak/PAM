@@ -1,5 +1,6 @@
 package fr.eirb.pam.tp1_ohayak_slu;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
@@ -40,5 +41,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             SmsManager.getDefault().sendTextMessage(num,null,msg,null,null);
         }
         Toast.makeText(getApplicationContext(), "SMS Envoyé!",Toast.LENGTH_LONG).show();
+
+        Intent login = new Intent (this, ReceveActivity.class);
+        login.putExtra("sms", msg);
+        startActivityForResult(login,48);
     }
 }

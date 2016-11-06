@@ -1,4 +1,7 @@
-#Mon Oct 17 20:07:28 CEST 2016
-base.0=/home/mrhyk/Coding/TP1_ohayak_slu/app/build/intermediates/transforms/dex/debug/folders/1000/1f/main
-renamed.0=classes.dex
-file.0=/home/mrhyk/Coding/TP1_ohayak_slu/app/build/intermediates/transforms/dex/debug/folders/1000/1f/main/classes.dex
+#Fri Oct 28 21:22:00 CEST 2016
+base.0=/home/mrhyk/Coding/TP1_ohayak_slu/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_15f34dde60df61b4e67e627067bdafdba99d313d
+renamed.1=classes.dex
+renamed.0=classes2.dex
+file.1=/home/mrhyk/Coding/TP1_ohayak_slu/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_9bfa1a4bcae7996e6c0ec56187ac68b1298aeba6/classes.dex
+base.1=/home/mrhyk/Coding/TP1_ohayak_slu/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_9bfa1a4bcae7996e6c0ec56187ac68b1298aeba6
+file.0=/home/mrhyk/Coding/TP1_ohayak_slu/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_15f34dde60df61b4e67e627067bdafdba99d313d/classes.dex
