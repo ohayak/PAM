@@ -23,8 +23,23 @@
             android:inputType="textEmailAddress" />
 
     <Button
+            android:id="@+id/start_service"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/button_send"
+            android:text="start service"
+            android:onClick="sendMessage" />
+
+    <Button
+            android:id="@+id/stop_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="stop service"
+            android:onClick="sendMessage" />
+
+    <Button
+            android:id="@+id/get_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="get count"
             android:onClick="sendMessage" />
 </LinearLayout>
