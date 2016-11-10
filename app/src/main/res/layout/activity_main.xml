@@ -9,37 +9,19 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         android:paddingBottom="@dimen/activity_vertical_margin"
-        tools:context="eirb.ohayak.pam.androidapp.MainActivity">
+        tools:context="eirb.ohayak.pam.androidapp.MainActivity" android:weightSum="1">
 
-    <TextView
-            android:text="Hello World!"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    <EditText
-            android:id="@+id/edit_message"
-            android:layout_width="fill_parent"
+    <Switch
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
-            android:inputType="textEmailAddress" />
+            android:text="LocationService"
+            android:id="@+id/location_switch"/>
 
     <Button
-            android:id="@+id/start_service"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="start service"
-            android:onClick="sendMessage" />
+            android:text="get"
+            android:onClick="sendMessage"
+            android:id="@+id/get_count" />
 
-    <Button
-            android:id="@+id/stop_service"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="stop service"
-            android:onClick="sendMessage" />
-
-    <Button
-            android:id="@+id/get_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="get count"
-            android:onClick="sendMessage" />
 </LinearLayout>
