@@ -1,100 +1,75 @@
 package eirb.ohayak.pam.androidapp;
 
-import android.Manifest;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Switch;
-import android.widget.Toast;
+import android.widget.*;
 
+import java.util.List;
 
+/**
+ * A login screen that offers login via email/password.
+ */
 public class MainActivity extends AppCompatActivity {
-    private static final int MY_PERMISSIONS_REQUEST = 0;
-    private Switch locationSwitch;
+
+    private Button addBook ;
+    private Button searchBook ;
+    private TextView titleAdd ;
+    private TextView isbnAdd ;
+    private TextView titleSearch ;
+    private ListView listView ;
+
+    private BookDB db;
+
+    // UI references.
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
         setContentView(R.layout.activity_main);
 
-        locationSwitch = (Switch) findViewById(R.id.location_switch);
-        locationSwitch.setOnClickListener(new View.OnClickListener() {
+        addBook = (Button) findViewById(R.id.btn_add_book);
+        searchBook = (Button) findViewById(R.id.btn_search_book);
+        titleAdd = (TextView) findViewById(R.id.book_title);
+        isbnAdd = (TextView) findViewById(R.id.book_isbn);
+        titleSearch = (TextView) findViewById(R.id.search_book_title);
+        listView = (ListView) findViewById(R.id.listView);
+        db = new BookDB(getApplicationContext());
+
+        addBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (locationSwitch.isChecked()) {
-                    start(view);
-                } else {
-                    stop(view);
-                }
+                addBook();
             }
         });
 
-
-        Button get = (Button) findViewById(R.id.get_count);
-        get.setOnClickListener(new View.OnClickListener() {
+        searchBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                get(view);
+                searchBook();
             }
         });
-
-        if (ContextCompat.checkSelfPermission(MainActivity.this,
-                Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this,
-                    new String[] { Manifest.permission.ACCESS_FINE_LOCATION },
-                    MY_PERMISSIONS_REQUEST);
-        }
-
+        db.open();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[],
-                                           int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted,
-
-                } else {
-                    // permission denied,
-                    ActivityCompat.requestPermissions(MainActivity.this,
-                            new String[] { Manifest.permission.ACCESS_FINE_LOCATION },
-                            MY_PERMISSIONS_REQUEST);
-                }
-            }
-        }
+    private void searchBook() {
+        String title = titleSearch.getText().toString();
+        List<Book> result = db.getBookByTitle(title);
+        ArrayAdapter<Book> adapter = new ArrayAdapter<Book>(MainActivity.this, R.layout.activity_main, result);
+        listView.setAdapter(adapter);
+        Toast.makeText(getApplicationContext(),
+                "Books found: "+result.size(), Toast.LENGTH_SHORT).show();
     }
 
-    public void start(View view) {
-        startService(new Intent(MainActivity.this, LocationService.class));
-    }
-
-    public void stop(View view) {
-        stopService(new Intent(MainActivity.this, LocationService.class));
-    }
-
-    public void get(View view) {
-        if (locationSwitch.isChecked()) {
-            Location location = LocationService.getLocation();
-            Double latitude = location.getLatitude();
-            Double longitude = location.getLongitude();
-            Toast.makeText(getBaseContext(),
-                    "Voici les coordonnées de votre téléphone : " + latitude + " " + longitude,
-                    Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(getBaseContext(),"Service not started",Toast.LENGTH_SHORT).show();
-        }
-
+    private void addBook() {
+        String title = titleAdd.getText().toString();
+        String isbn = isbnAdd.getText().toString();
+        Book book = new Book(title, isbn);
+        db.insertBook(book);
+        Toast.makeText(getApplicationContext(),
+                "Book added", Toast.LENGTH_SHORT).show();
     }
 
 
 }
+
