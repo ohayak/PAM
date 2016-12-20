@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">LocationService</string>
+    <string name="app_name">MyTours</string>
+    <string name="title_activity_tour">New Tour</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

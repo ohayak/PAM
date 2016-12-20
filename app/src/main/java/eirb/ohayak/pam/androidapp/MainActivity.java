@@ -6,50 +6,62 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Switch;
-import android.widget.Toast;
+import android.widget.*;
 
 
 public class MainActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST = 0;
-    private Switch locationSwitch;
+    private static final int CREATE_TOUR = 0;
+    private FloatingActionButton newTour;
+    private ExpandableListView expandableListViewActive;
+    private ExpandableListView expandableListViewOld;
+    private TourExpandableListAdapter expandableListAdapterActive;
+    private TourExpandableListAdapter expandableListAdapterOld;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        locationSwitch = (Switch) findViewById(R.id.location_switch);
-        locationSwitch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (locationSwitch.isChecked()) {
-                    start(view);
-                } else {
-                    stop(view);
-                }
-            }
-        });
-
-
-        Button get = (Button) findViewById(R.id.get_count);
-        get.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                get(view);
-            }
-        });
 
         if (ContextCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this,
                     new String[] { Manifest.permission.ACCESS_FINE_LOCATION },
                     MY_PERMISSIONS_REQUEST);
+        }
+
+        newTour = (FloatingActionButton) findViewById(R.id.btn_new_tour);
+        newTour.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent tourIntent = new Intent(view.getContext(), TourActivity.class);
+                startActivityForResult(tourIntent,CREATE_TOUR);
+            }
+        });
+
+        expandableListViewActive = (ExpandableListView) findViewById(R.id.expandableListViewActive);
+        expandableListViewOld = (ExpandableListView) findViewById(R.id.expandableListViewOld);
+
+        expandableListAdapterActive = new TourExpandableListAdapter(this, null);
+        expandableListAdapterOld = new TourExpandableListAdapter(this, null);
+
+        expandableListViewActive.setAdapter(expandableListAdapterActive);
+        expandableListViewOld.setAdapter(expandableListAdapterOld);
+
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && requestCode == CREATE_TOUR) {
+            Toast.makeText(getApplicationContext(),
+                    "Tour created", Toast.LENGTH_SHORT).show();
+            expandableListAdapterActive.addTour((Tour) data.getSerializableExtra("newTour"));
+            expandableListAdapterActive.notifyDataSetChanged();
         }
 
     }
@@ -73,28 +85,5 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
-    public void start(View view) {
-        startService(new Intent(MainActivity.this, LocationService.class));
-    }
-
-    public void stop(View view) {
-        stopService(new Intent(MainActivity.this, LocationService.class));
-    }
-
-    public void get(View view) {
-        if (locationSwitch.isChecked()) {
-            Location location = LocationService.getLocation();
-            Double latitude = location.getLatitude();
-            Double longitude = location.getLongitude();
-            Toast.makeText(getBaseContext(),
-                    "Voici les coordonnées de votre téléphone : " + latitude + " " + longitude,
-                    Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(getBaseContext(),"Service not started",Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
 
 }

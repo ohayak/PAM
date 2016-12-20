@@ -9,12 +9,18 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.widget.Toast;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class LocationService extends Service {
     private static LocationManager locationMgr = null;
-    private LocationListener onLocationChange = new LocationListener() {
+    private static List<Tour> activeTours = new ArrayList<Tour>();
+    private static LocationListener onLocationChange = new LocationListener() {
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
         }
@@ -29,14 +35,9 @@ public class LocationService extends Service {
 
         @Override
         public void onLocationChanged(Location location) {
-            Double latitude = location.getLatitude();
-            Double longitude = location.getLongitude();
-
-            Toast.makeText(getBaseContext(),
-                    "Vos coordonnées : \n"
-                            + "Latitude = "+ latitude + "\n"
-                            + "Longitude = " + longitude,
-                    Toast.LENGTH_LONG).show();
+            for (Tour entry : activeTours) {
+                entry.addLocation(new LatLng(location.getLatitude(), location.getLongitude()));
+            }
         }
     };
 
@@ -48,13 +49,15 @@ public class LocationService extends Service {
     @Override
     public void onCreate() {
         locationMgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        locationMgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 0, onLocationChange);
-        locationMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, onLocationChange);
+        locationMgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 30000, 1, onLocationChange);
+        locationMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 30000, 1, onLocationChange);
         super.onCreate();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Tour newTour = (Tour) intent.getSerializableExtra("newTour");
+        activeTours.add(newTour);
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -62,10 +65,6 @@ public class LocationService extends Service {
     public void onDestroy() {
         super.onDestroy();
         locationMgr.removeUpdates(onLocationChange);
-    }
-
-    public static Location getLocation() {
-        return locationMgr.getLastKnownLocation(LocationManager.GPS_PROVIDER);
     }
 
 }
