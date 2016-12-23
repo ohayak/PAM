@@ -3,6 +3,7 @@ package eirb.ohayak.pam.androidapp;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,25 +49,36 @@ public class TourExpandableListAdapter extends BaseExpandableListAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             if (tour.isActive()) {
                 convertView = layoutInflater.inflate(R.layout.list_details2, null);
-                //TODO
                 Button saveTourButton = (Button) convertView.findViewById(R.id.btn_save);
+                saveTourButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //TODO
+                    }
+                });
             } else {
                 convertView = layoutInflater.inflate(R.layout.list_details, null);
             }
         }
         TextView expandedListTextView = (TextView) convertView.findViewById(R.id.txt_date);
-        expandedListTextView.setText(tour.getDay());
+        expandedListTextView.setText(tour.getStart());
         Button showTourButton = (Button) convertView.findViewById(R.id.btn_show);
         showTourButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent tourIntent = new Intent(view.getContext(), MainActivity.class);
+                Intent tourIntent = new Intent(view.getContext(), MapsActivity.class);
                 tourIntent.putExtra("tour", tour);
                 context.startActivity(tourIntent);
             }
         });
-        //TODO
+
         Button deleteTourButton = (Button) convertView.findViewById(R.id.btn_delete);
+        deleteTourButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               //TODO
+            }
+        });
 
         return convertView;
     }

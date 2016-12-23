@@ -1,10 +1,8 @@
 package eirb.ohayak.pam.androidapp;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -12,6 +10,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.*;
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.List;
+import java.util.UUID;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -22,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private ExpandableListView expandableListViewOld;
     private TourExpandableListAdapter expandableListAdapterActive;
     private TourExpandableListAdapter expandableListAdapterOld;
+    private User curentUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +55,26 @@ public class MainActivity extends AppCompatActivity {
         expandableListViewActive.setAdapter(expandableListAdapterActive);
         expandableListViewOld.setAdapter(expandableListAdapterOld);
 
+        Intent intent = getIntent();
+        curentUser = (User) intent.getSerializableExtra(LoginActivity.KEY_CONNECTED_USER);
+        loadUserData();
+
+    }
+
+    private void loadUserData() {
+        TourHelper th = TourHelper.getInstance();
+        List<Tour> tours = th.getByUserId(curentUser.getId());
+        for (Tour entry : tours) {
+            if (entry.isActive())
+                expandableListAdapterActive.addTour(entry);
+            else
+                expandableListAdapterOld.addTour(entry);
+        }
+        expandableListAdapterOld.notifyDataSetChanged();
+        expandableListAdapterActive.notifyDataSetChanged();
+        Intent intent = new Intent(getApplicationContext(), LocationService.class);
+        intent.putExtra(LoginActivity.KEY_CONNECTED_USER, curentUser);
+        startService(intent);
     }
 
 
@@ -60,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK && requestCode == CREATE_TOUR) {
             Toast.makeText(getApplicationContext(),
                     "Tour created", Toast.LENGTH_SHORT).show();
-            expandableListAdapterActive.addTour((Tour) data.getSerializableExtra("newTour"));
+            expandableListAdapterActive.addTour((Tour) data.getParcelableExtra("newTour"));
             expandableListAdapterActive.notifyDataSetChanged();
         }
 

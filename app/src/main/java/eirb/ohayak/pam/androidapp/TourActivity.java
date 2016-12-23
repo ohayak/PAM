@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 public class TourActivity extends AppCompatActivity {
     private Intent callIntent;
+    private TourHelper th = TourHelper.getInstance();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,10 +40,14 @@ public class TourActivity extends AppCompatActivity {
             tourDetails = ((EditText) findViewById(R.id.txt_tour_details)).getText().toString();
         }
 
-        Tour newTour = new Tour(tourName,true);
+        Tour newTour = new Tour();
+        newTour.setName(tourName);
         newTour.setDetails(tourDetails);
+        newTour.setActive(true);
+        th.insert(newTour);
         callIntent.putExtra("newTour", newTour);
-        intent.putExtra("newTour", newTour);
+        intent.putExtra("request", LocationService.ADD_TOUR);
+        intent.putExtra("new_tour", newTour);
         startService(intent);
         setResult(RESULT_OK, callIntent);
         finish();

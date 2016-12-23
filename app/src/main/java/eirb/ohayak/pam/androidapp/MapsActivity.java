@@ -29,7 +29,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         Intent intent = getIntent();
-        Tour tour = (Tour) intent.getSerializableExtra("tour");
+        Tour tour = intent.getParcelableExtra("tour");
         points = tour.getLocations();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -56,6 +56,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             LatLng point = points.get(i);
             options.add(point);
         }
-        line = googleMap.addPolyline(options); //add Polyline
+        googleMap.addPolyline(options); //add Polyline
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(points.get(0)));
+
     }
 }
