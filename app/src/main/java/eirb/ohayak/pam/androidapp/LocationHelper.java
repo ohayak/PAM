@@ -32,7 +32,8 @@ public class LocationHelper extends TableHelper<LatLng> {
         values.put(KEY_ID, id);
         values.put(KEY_LATITUDE, o.latitude);
         values.put(KEY_LONGITUDE, o.longitude);
-        return database.insert(TABLE_NAME, null, values);
+        database.insert(TABLE_NAME, null, values);
+        return id;
     }
 
     @Override

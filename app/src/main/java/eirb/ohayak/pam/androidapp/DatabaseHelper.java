@@ -16,16 +16,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "toursDatabase";
 
     private static final String CREATE_TABLE_USERS = "CREATE TABLE "+ UserHelper.TABLE_NAME + "("
-            + UserHelper.KEY_ID + "INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + UserHelper.KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + UserHelper.KEY_EMAIL + " TEXT,"
             + UserHelper.KEY_PWD + " TEXT,"
             + UserHelper.KEY_FIRSTNAME + " TEXT,"
-            + UserHelper.KEY_LASTNAME + " TEXT,"
-            + ")";
+            + UserHelper.KEY_LASTNAME + " TEXT"
+            + ");";
 
     private static final String CREATE_TABLE_TOURS = "CREATE TABLE "+ TourHelper.TABLE_NAME + "("
-            + TourHelper.KEY_ID + "INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + TourHelper.KEY_USER_ID + "INTEGER,"
+            + TourHelper.KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + TourHelper.KEY_USER_ID + " INTEGER,"
             + TourHelper.KEY_NAME + " TEXT,"
             + TourHelper.KEY_STATUS + " TEXT,"
             + TourHelper.KEY_END + " TEXT,"
@@ -33,13 +33,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + TourHelper.KEY_SPEED + " TEXT,"
             + TourHelper.KEY_TOPSPEED + " TEXT,"
             + TourHelper.KEY_DETAILS + " TEXT,"
-            + "FOREIGN KER ("+ TourHelper.KEY_USER_ID +") REFERENCES "+ UserHelper.TABLE_NAME +"("+ UserHelper.KEY_ID +"));";
+            + "FOREIGN KEY ("+ TourHelper.KEY_USER_ID +") REFERENCES "+ UserHelper.TABLE_NAME +"("+ UserHelper.KEY_ID +"));";
 
     private static final String CREATE_TABLE_LOCATIONS = "CREATE TABLE "+ LocationHelper.TABLE_NAME + "("
-            + LocationHelper.KEY_ID + "INTEGER PRIMARY KEY,"
+            + LocationHelper.KEY_ID + " INTEGER PRIMARY KEY,"
             + LocationHelper.KEY_LONGITUDE + " DOUBLE,"
             + LocationHelper.KEY_LATITUDE + " DOUBLE,"
-            + "FOREIGN KER ("+ LocationHelper.KEY_ID +") REFERENCES "+ TourHelper.TABLE_NAME +"("+ TourHelper.KEY_ID +"));";
+            + "FOREIGN KEY ("+ LocationHelper.KEY_ID +") REFERENCES "+ TourHelper.TABLE_NAME +"("+ TourHelper.KEY_ID +"));";
 
     private DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

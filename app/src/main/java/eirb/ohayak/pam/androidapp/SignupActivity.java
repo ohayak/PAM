@@ -16,20 +16,25 @@ import java.util.UUID;
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
 
-    EditText _nameText = (EditText)findViewById(R.id.input_name);
-    EditText _addressText = (EditText)findViewById(R.id.input_address);
-    EditText _emailText = (EditText)findViewById(R.id.input_email);
-    EditText _mobileText = (EditText)findViewById(R.id.input_mobile);
-    EditText _passwordText = (EditText)findViewById(R.id.input_password);
-    EditText _reEnterPasswordText = (EditText)findViewById(R.id.input_reEnterPassword);
-    Button _signupButton = (Button)findViewById(R.id.btn_signup);
-    TextView _loginLink = (TextView)findViewById(R.id.link_login);
+    EditText _nameText;
+    EditText _emailText;
+    EditText _passwordText;
+    EditText _reEnterPasswordText;
+    Button _signupButton;
+    TextView _loginLink;
     User user;
+    UserHelper uh = UserHelper.getInstance();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+        _nameText = (EditText)findViewById(R.id.input_name);
+        _emailText = (EditText)findViewById(R.id.input_email);
+        _passwordText = (EditText)findViewById(R.id.input_password);
+        _reEnterPasswordText = (EditText)findViewById(R.id.input_reEnterPassword);
+        _signupButton = (Button)findViewById(R.id.btn_signup);
+        _loginLink = (TextView)findViewById(R.id.link_login);
 
         _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,31 +72,24 @@ public class SignupActivity extends AppCompatActivity {
         progressDialog.show();
 
         String name = _nameText.getText().toString();
-        String address = _addressText.getText().toString();
         String email = _emailText.getText().toString();
-        String mobile = _mobileText.getText().toString();
         String password = _passwordText.getText().toString();
         String reEnterPassword = _reEnterPasswordText.getText().toString();
-
-        UserHelper uh = UserHelper.getInstance();
-        uh.open();
         user = uh.getByEmail(email);
         final Boolean valid;
         if (user == null) {
             _emailText.setError(null);
             valid = true;
+            user = new User();
+            user.setLastname(name);
+            user.setFirstname(name);
+            user.setEmail(email);
+            user.setPwd(password);
+            uh.insert(user);
         } else {
             _emailText.setError("email adress already used");
             valid = false;
         }
-
-        user = new User();
-        user.setLastname(name);
-        user.setFirstname(name);
-        user.setEmail(email);
-        user.setPwd(password);
-        uh.insert(user);
-        uh.close();
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
@@ -108,7 +106,7 @@ public class SignupActivity extends AppCompatActivity {
 
     public void onSignupSuccess() {
         _signupButton.setEnabled(true);
-        Intent intent = getIntent();
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         intent.putExtra(LoginActivity.KEY_CONNECTED_USER, user);
         setResult(RESULT_OK, intent);
         finish();
@@ -123,9 +121,7 @@ public class SignupActivity extends AppCompatActivity {
         boolean valid = true;
 
         String name = _nameText.getText().toString();
-        String address = _addressText.getText().toString();
         String email = _emailText.getText().toString();
-        String mobile = _mobileText.getText().toString();
         String password = _passwordText.getText().toString();
         String reEnterPassword = _reEnterPasswordText.getText().toString();
 
@@ -136,26 +132,11 @@ public class SignupActivity extends AppCompatActivity {
             _nameText.setError(null);
         }
 
-        if (address.isEmpty()) {
-            _addressText.setError("Enter Valid Address");
-            valid = false;
-        } else {
-            _addressText.setError(null);
-        }
-
-
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             _emailText.setError("enter a valid email address");
             valid = false;
         } else {
             _emailText.setError(null);
-        }
-
-        if (mobile.isEmpty() || mobile.length()!=10) {
-            _mobileText.setError("Enter Valid Mobile Number");
-            valid = false;
-        } else {
-            _mobileText.setError(null);
         }
 
         if (password.isEmpty() || password.length() < 4 || password.length() > 10) {

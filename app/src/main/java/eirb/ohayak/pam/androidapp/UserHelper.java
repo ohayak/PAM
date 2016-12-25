@@ -23,18 +23,18 @@ public class UserHelper extends TableHelper<User> {
     @Override
     public synchronized long insert(User o) {
         ContentValues values = new ContentValues();
-        values.put(KEY_ID, o.getId());
         values.put(KEY_EMAIL, o.getEmail());
         values.put(KEY_PWD, o.getPwd());
         values.put(KEY_FIRSTNAME, o.getFirstname());
         values.put(KEY_LASTNAME, o.getLastname());
-        return database.insert(TABLE_NAME, null, values);
+        o.setId(database.insert(TABLE_NAME, null, values));
+        return o.getId();
 
     }
 
     @Override
     public User getById(long id) {
-        Cursor cursor = database.rawQuery("SELECT * FROM" + TABLE_NAME + "WHERE "+ KEY_ID +"=?",
+        Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ KEY_ID +" =?;",
                 new String[]{String.valueOf(id)});
         if (cursor.getCount() > 0)
             return cursorToItem(cursor,0);
@@ -55,7 +55,7 @@ public class UserHelper extends TableHelper<User> {
     }
 
     public User getByEmail(String mEmail) {
-        Cursor cursor = database.rawQuery("SELECT * FROM" + TABLE_NAME + "WHERE "+ KEY_EMAIL +"=?",
+        Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ KEY_EMAIL +" =?;",
                 new String[]{mEmail});
         if (cursor.getCount() > 0)
             return cursorToItem(cursor,0);

@@ -17,17 +17,21 @@ public class LoginActivity extends AppCompatActivity {
     private static final int REQUEST_SIGNUP = 0;
     public static final String KEY_CONNECTED_USER = "connected_user";
 
-    EditText _emailText = (EditText) findViewById(R.id.input_email);
-    EditText _passwordText = (EditText) findViewById(R.id.input_password);
-    Button _loginButton = (Button) findViewById(R.id.btn_login);
-    TextView _signupLink = (TextView) findViewById(R.id.link_signup);
+    EditText _passwordText;
+    EditText _emailText;
+    Button _loginButton;
+    TextView _signupLink;
     User user;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        DatabaseHelper.create(getApplicationContext());
+        _passwordText = (EditText) findViewById(R.id.input_password);
+        _emailText = (EditText) findViewById(R.id.input_email);
+        _loginButton = (Button) findViewById(R.id.btn_login);
+        _signupLink = (TextView) findViewById(R.id.link_signup);
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -43,7 +47,6 @@ public class LoginActivity extends AppCompatActivity {
                 // Start the Signup activity
                 Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
                 startActivityForResult(intent, REQUEST_SIGNUP);
-                finish();
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
         });
@@ -106,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 data.setClass(getApplicationContext(), MainActivity.class);
                 startActivity(data);
-                this.finish();
+                finish();
             }
         }
     }

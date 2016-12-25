@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         expandableListViewOld.setAdapter(expandableListAdapterOld);
 
         Intent intent = getIntent();
-        curentUser = (User) intent.getSerializableExtra(LoginActivity.KEY_CONNECTED_USER);
+        curentUser = (User) intent.getParcelableExtra(LoginActivity.KEY_CONNECTED_USER);
         loadUserData();
 
     }

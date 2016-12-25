@@ -45,7 +45,7 @@ public class TourHelper extends TableHelper<Tour> {
 
     @Override
     public Tour getById(long id) {
-        Cursor cursor = database.rawQuery("SELECT * FROM" + TABLE_NAME + "WHERE "+ KEY_ID +"=?",
+        Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ KEY_ID +" =?;",
                 new String[]{String.valueOf(id)});
         if (cursor.getCount() > 0)
             return cursorToItem(cursor,0);
@@ -54,7 +54,7 @@ public class TourHelper extends TableHelper<Tour> {
     }
 
     public List<Tour> getByUserId(long id) {
-        Cursor cursor = database.rawQuery("SELECT * FROM" + TABLE_NAME + "WHERE "+ UserHelper.KEY_ID +"=?",
+        Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ UserHelper.KEY_ID +" =?;",
                 new String[]{String.valueOf(id)});
         ArrayList<Tour> result = new ArrayList<Tour>();
         for(int i =0 ; i < cursor.getCount(); i++) {

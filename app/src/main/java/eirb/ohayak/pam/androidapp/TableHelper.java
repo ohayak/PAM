@@ -11,9 +11,8 @@ import java.util.List;
  */
 public abstract class TableHelper<T> {
     protected static SQLiteDatabase database;
-    protected static DatabaseHelper mBaseSQLite;
+    protected static DatabaseHelper mBaseSQLite =  DatabaseHelper.getInstance();
     public TableHelper(){
-        mBaseSQLite = DatabaseHelper.getInstance();
     }
 
     protected void open(){
