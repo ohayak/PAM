@@ -1,4 +1,4 @@
-package eirb.ohayak.pam.androidapp;
+package eirb.ohayak.pam.androidapp.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,12 +10,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import eirb.ohayak.pam.androidapp.R;
+import eirb.ohayak.pam.androidapp.object.Tour;
 
-import java.net.Inet4Address;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {

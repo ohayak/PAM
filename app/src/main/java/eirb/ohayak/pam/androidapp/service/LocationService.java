@@ -1,4 +1,4 @@
-package eirb.ohayak.pam.androidapp;
+package eirb.ohayak.pam.androidapp.service;
 
 import android.app.Service;
 import android.content.Context;
@@ -9,6 +9,11 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import com.google.android.gms.maps.model.LatLng;
+import eirb.ohayak.pam.androidapp.activity.LoginActivity;
+import eirb.ohayak.pam.androidapp.object.Tour;
+import eirb.ohayak.pam.androidapp.helper.TourHelper;
+import eirb.ohayak.pam.androidapp.object.User;
+import eirb.ohayak.pam.androidapp.helper.LocationHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +89,6 @@ public class LocationService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        locationHelper.close();
         locationMgr.removeUpdates(onLocationChange);
     }
 

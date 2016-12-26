@@ -1,10 +1,8 @@
-package eirb.ohayak.pam.androidapp;
+package eirb.ohayak.pam.androidapp.helper;
 
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
-import java.util.List;
+import eirb.ohayak.pam.androidapp.helper.DatabaseHelper;
 
 /**
  * Created by mrhyk on 21/12/2016.

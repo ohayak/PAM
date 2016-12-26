@@ -1,4 +1,4 @@
-package eirb.ohayak.pam.androidapp;
+package eirb.ohayak.pam.androidapp.activity;
 
 import android.Manifest;
 import android.content.Intent;
@@ -10,10 +10,14 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.*;
-import com.google.android.gms.maps.model.LatLng;
+import eirb.ohayak.pam.androidapp.*;
+import eirb.ohayak.pam.androidapp.helper.TourHelper;
+import eirb.ohayak.pam.androidapp.object.Tour;
+import eirb.ohayak.pam.androidapp.object.TourExpandableListAdapter;
+import eirb.ohayak.pam.androidapp.object.User;
+import eirb.ohayak.pam.androidapp.service.LocationService;
 
 import java.util.List;
-import java.util.UUID;
 
 
 public class MainActivity extends AppCompatActivity {

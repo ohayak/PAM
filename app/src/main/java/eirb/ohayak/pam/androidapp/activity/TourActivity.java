@@ -1,4 +1,4 @@
-package eirb.ohayak.pam.androidapp;
+package eirb.ohayak.pam.androidapp.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,10 +7,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+import com.google.android.gms.maps.model.LatLng;
+import eirb.ohayak.pam.androidapp.R;
+import eirb.ohayak.pam.androidapp.object.Tour;
+import eirb.ohayak.pam.androidapp.helper.TourHelper;
+import eirb.ohayak.pam.androidapp.service.LocationService;
+
+import java.util.ArrayList;
+import java.util.Calendar;
 
 public class TourActivity extends AppCompatActivity {
     private Intent callIntent;
     private TourHelper th = TourHelper.getInstance();
+    Calendar calendar = Calendar.getInstance();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +53,8 @@ public class TourActivity extends AppCompatActivity {
         newTour.setName(tourName);
         newTour.setDetails(tourDetails);
         newTour.setActive(true);
+        newTour.setLocations(new ArrayList<LatLng>(0));
+        newTour.setStart(String.valueOf(calendar.getTimeInMillis()));
         th.insert(newTour);
         callIntent.putExtra("newTour", newTour);
         intent.putExtra("request", LocationService.ADD_TOUR);

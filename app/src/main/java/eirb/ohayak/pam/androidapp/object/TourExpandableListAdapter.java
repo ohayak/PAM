@@ -1,15 +1,17 @@
-package eirb.ohayak.pam.androidapp;
+package eirb.ohayak.pam.androidapp.object;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import eirb.ohayak.pam.androidapp.R;
+import eirb.ohayak.pam.androidapp.activity.MapsActivity;
+import eirb.ohayak.pam.androidapp.object.Tour;
 
 import java.util.ArrayList;
 import java.util.List;

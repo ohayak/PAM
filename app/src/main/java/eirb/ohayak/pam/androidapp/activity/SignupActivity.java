@@ -1,4 +1,4 @@
-package eirb.ohayak.pam.androidapp;
+package eirb.ohayak.pam.androidapp.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -10,8 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.UUID;
+import eirb.ohayak.pam.androidapp.R;
+import eirb.ohayak.pam.androidapp.object.User;
+import eirb.ohayak.pam.androidapp.helper.UserHelper;
 
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
@@ -106,7 +107,7 @@ public class SignupActivity extends AppCompatActivity {
 
     public void onSignupSuccess() {
         _signupButton.setEnabled(true);
-        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        Intent intent = getIntent();
         intent.putExtra(LoginActivity.KEY_CONNECTED_USER, user);
         setResult(RESULT_OK, intent);
         finish();

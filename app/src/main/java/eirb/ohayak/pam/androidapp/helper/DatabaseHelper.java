@@ -1,6 +1,5 @@
-package eirb.ohayak.pam.androidapp;
+package eirb.ohayak.pam.androidapp.helper;
 
-import android.app.Activity;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;

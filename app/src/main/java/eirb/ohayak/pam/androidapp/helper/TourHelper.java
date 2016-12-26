@@ -1,7 +1,8 @@
-package eirb.ohayak.pam.androidapp;
+package eirb.ohayak.pam.androidapp.helper;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import eirb.ohayak.pam.androidapp.object.Tour;
 
 import java.util.ArrayList;
 import java.util.List;

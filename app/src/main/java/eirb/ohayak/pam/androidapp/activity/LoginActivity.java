@@ -1,4 +1,4 @@
-package eirb.ohayak.pam.androidapp;
+package eirb.ohayak.pam.androidapp.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -10,6 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import eirb.ohayak.pam.androidapp.R;
+import eirb.ohayak.pam.androidapp.object.User;
+import eirb.ohayak.pam.androidapp.helper.UserHelper;
+import eirb.ohayak.pam.androidapp.helper.DatabaseHelper;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -33,7 +37,6 @@ public class LoginActivity extends AppCompatActivity {
         _loginButton = (Button) findViewById(R.id.btn_login);
         _signupLink = (TextView) findViewById(R.id.link_signup);
         _loginButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 login();
@@ -41,11 +44,10 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         _signupLink.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 // Start the Signup activity
-                Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
+                Intent intent = new Intent(v.getContext(), SignupActivity.class);
                 startActivityForResult(intent, REQUEST_SIGNUP);
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
@@ -71,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
-        // TODO: Implement your own authentication logic here.
+        // Implement your own authentication logic here.
         UserHelper uh = UserHelper.getInstance();
         user = uh.getByEmail(email);
         final Boolean valid;

@@ -1,4 +1,4 @@
-package eirb.ohayak.pam.androidapp;
+package eirb.ohayak.pam.androidapp.helper;
 
 import android.content.ContentValues;
 import android.database.Cursor;

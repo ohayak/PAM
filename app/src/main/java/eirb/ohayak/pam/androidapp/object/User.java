@@ -1,4 +1,4 @@
-package eirb.ohayak.pam.androidapp;
+package eirb.ohayak.pam.androidapp.object;
 
 import android.os.Parcel;
 import android.os.Parcelable;
