@@ -1,6 +1,7 @@
 package eirb.ohayak.pam.androidapp.activity;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -53,7 +54,7 @@ public class TourActivity extends AppCompatActivity {
         newTour.setName(tourName);
         newTour.setDetails(tourDetails);
         newTour.setActive(true);
-        newTour.setLocations(new ArrayList<LatLng>(0));
+        newTour.setLocations(new ArrayList<Location>(0));
         newTour.setStart(String.valueOf(calendar.getTimeInMillis()));
         th.insert(newTour);
         callIntent.putExtra("newTour", newTour);

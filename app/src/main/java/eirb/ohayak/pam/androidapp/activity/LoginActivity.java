@@ -74,6 +74,7 @@ public class LoginActivity extends AppCompatActivity {
         String password = _passwordText.getText().toString();
 
         // Implement your own authentication logic here.
+        Log.d(TAG, "authentification");
         UserHelper uh = UserHelper.getInstance();
         user = uh.getByEmail(email);
         final Boolean valid;
@@ -123,9 +124,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void onLoginSuccess() {
+        Log.d(TAG, "logged in with user:" + user.getId());
         _loginButton.setEnabled(true);
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.putExtra(KEY_CONNECTED_USER, user);
+        startActivity(intent);
         finish();
     }
 

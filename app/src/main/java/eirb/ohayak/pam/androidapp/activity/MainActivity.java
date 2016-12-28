@@ -59,13 +59,15 @@ public class MainActivity extends AppCompatActivity {
         expandableListViewActive.setAdapter(expandableListAdapterActive);
         expandableListViewOld.setAdapter(expandableListAdapterOld);
 
-        Intent intent = getIntent();
-        curentUser = (User) intent.getParcelableExtra(LoginActivity.KEY_CONNECTED_USER);
         loadUserData();
 
     }
 
     private void loadUserData() {
+        Intent calling = getIntent();
+        curentUser = (User) calling.getParcelableExtra(LoginActivity.KEY_CONNECTED_USER);
+        TextView welcome = (TextView) findViewById(R.id.txt_welcome);
+        welcome.setText("Welcome "+ curentUser.getLastname());
         TourHelper th = TourHelper.getInstance();
         List<Tour> tours = th.getByUserId(curentUser.getId());
         for (Tour entry : tours) {

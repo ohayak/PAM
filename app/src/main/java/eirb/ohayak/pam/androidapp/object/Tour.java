@@ -1,5 +1,6 @@
 package eirb.ohayak.pam.androidapp.object;
 
+import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.google.android.gms.maps.model.LatLng;
@@ -19,11 +20,12 @@ public class Tour implements Parcelable, Comparable<Tour> {
     private String details;
     private float speed;
     private float topspeed;
-    private List<LatLng> locations;
+    private float distance;
+    private List<Location> locations;
 
     public Tour(){}
 
-    public Tour(boolean active, long id, long userId, String name, String start, String end, String details, float speed, float topspeed, List<LatLng> locations) {
+    public Tour(boolean active, long id, long userId, String name, String start, String end, String details, float speed, float topspeed, List<Location> locations) {
         this.active = active;
         this.id = id;
         this.userId = userId;
@@ -46,7 +48,7 @@ public class Tour implements Parcelable, Comparable<Tour> {
         details = in.readString();
         speed = in.readFloat();
         topspeed = in.readFloat();
-        locations = in.createTypedArrayList(LatLng.CREATOR);
+        locations = in.createTypedArrayList(Location.CREATOR);
     }
 
     @Override
@@ -103,12 +105,12 @@ public class Tour implements Parcelable, Comparable<Tour> {
         this.name = name;
     }
 
-    public List<LatLng> getLocations() {
+    public List<Location> getLocations() {
         return locations;
     }
 
-    public void setLocations(List<LatLng> locations) {
-        this.locations = (List<LatLng>) locations;
+    public void setLocations(List<Location> locations) {
+        this.locations = (List<Location>) locations;
     }
 
     public String getDetails() {
@@ -155,8 +157,16 @@ public class Tour implements Parcelable, Comparable<Tour> {
         this.details = details;
     }
 
-    public void addLocation(LatLng entry) {
+    public void addLocation(Location entry) {
         locations.add(entry);
+    }
+
+    public float getDistance() {
+        return distance;
+    }
+
+    public void setDistance(float distance) {
+        this.distance = distance;
     }
 
     public boolean isActive() {

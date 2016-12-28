@@ -44,6 +44,20 @@ public class TourHelper extends TableHelper<Tour> {
         return o.getId();
     }
 
+    public synchronized long update(Tour o) {
+        ContentValues values = new ContentValues();
+        values.put(KEY_NAME, o.getName());
+        values.put(KEY_STATUS, o.isActive());
+        values.put(KEY_END, o.getEnd());
+        values.put(KEY_START, o.getStart());
+        values.put(KEY_SPEED, o.getSpeed());
+        values.put(KEY_TOPSPEED, o.getTopspeed());
+        values.put(KEY_DETAILS, o.getDetails());
+        values.put(KEY_USER_ID, o.getUserId());
+        database.update(TABLE_NAME, values, KEY_ID +"=?",o.getId());
+        return o.getId();
+    }
+
     @Override
     public Tour getById(long id) {
         Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ KEY_ID +" =?;",

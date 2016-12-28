@@ -2,6 +2,7 @@ package eirb.ohayak.pam.androidapp.helper;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.location.Location;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.List;
 /**
  * Created by mrhyk on 22/12/2016.
  */
-public class LocationHelper extends TableHelper<LatLng> {
+public class LocationHelper extends TableHelper<Location> {
     public static final String TABLE_NAME = "locations";
     public static final String KEY_ID = "locationid";
     public static final String KEY_LATITUDE = "latitude";
@@ -23,31 +24,31 @@ public class LocationHelper extends TableHelper<LatLng> {
     }
 
     @Override
-    public long insert(LatLng o) {
+    public long insert(Location o) {
         return 0;
     }
 
-    public long insertWithId(LatLng o, long id) {
+    public long insertWithId(Location o, long id) {
         ContentValues values = new ContentValues();
         values.put(KEY_ID, id);
-        values.put(KEY_LATITUDE, o.latitude);
-        values.put(KEY_LONGITUDE, o.longitude);
+        values.put(KEY_LATITUDE, o.getLatitude());
+        values.put(KEY_LONGITUDE, o.getLongitude());
         database.insert(TABLE_NAME, null, values);
         return id;
     }
 
     @Override
-    public LatLng getById(long id) {
+    public Location getById(long id) {
         return null;
     }
 
 
-    public List<LatLng> getByTourId(long id) {
+    public List<Location> getByTourId(long id) {
         Cursor cursor = database.rawQuery("SELECT * FROM" + TABLE_NAME + "WHERE "+ KEY_ID +"=?",
                 new String[]{String.valueOf(id)});
-        List<LatLng> result = null;
+        List<Location> result = null;
         if (cursor.getCount() > 0) {
-            result = new ArrayList<LatLng>();
+            result = new ArrayList<Location>();
             for (int i = 0; i < cursor.getCount(); i++) {
                 result.add(cursorToItem(cursor, i));
             }
@@ -56,13 +57,12 @@ public class LocationHelper extends TableHelper<LatLng> {
     }
 
     @Override
-    protected LatLng cursorToItem(Cursor cursor, int position) {
-        LatLng location = null;
+    protected Location cursorToItem(Cursor cursor, int position) {
+        Location location = null;
         if (cursor.getCount()-1 <= position) {
             cursor.moveToPosition(position);
-            long lat = (Long.parseLong(cursor.getString(cursor.getColumnIndex(KEY_LATITUDE))));
-            long lnt = (Long.parseLong(cursor.getString(cursor.getColumnIndex(KEY_LONGITUDE))));
-            location = new LatLng(lat, lnt);
+            location.setLatitude(Double.parseDouble(cursor.getString(cursor.getColumnIndex(KEY_LATITUDE))));
+            location.setLongitude(Double.parseDouble(cursor.getString(cursor.getColumnIndex(KEY_LONGITUDE))));
         }
         return location;
     }

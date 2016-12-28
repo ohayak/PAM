@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TourExpandableListAdapter extends BaseExpandableListAdapter {
-
+    private static final String TAG = "TourExpandableListAdapter";
     private Context context;
     private List<Tour> tourList;
 
@@ -70,7 +70,7 @@ public class TourExpandableListAdapter extends BaseExpandableListAdapter {
             public void onClick(View view) {
                 Intent tourIntent = new Intent(view.getContext(), MapsActivity.class);
                 tourIntent.putExtra("tour", tour);
-                context.startActivity(tourIntent);
+                view.getContext().startActivity(tourIntent);
             }
         });
 

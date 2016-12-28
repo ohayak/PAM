@@ -2,6 +2,7 @@ package eirb.ohayak.pam.androidapp.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
@@ -20,7 +21,7 @@ import java.util.List;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private List<LatLng> points;
+    private List<Location> points;
     private Polyline line;
 
     @Override
@@ -52,11 +53,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         PolylineOptions options = new PolylineOptions().width(5).color(Color.BLUE).geodesic(true);
         for (int i = 0; i < points.size(); i++) {
-            LatLng point = points.get(i);
-            options.add(point);
+            Location point = points.get(i);
+            LatLng ll = new LatLng(point.getLatitude(), point.getLongitude());
+            options.add(ll);
         }
         googleMap.addPolyline(options); //add Polyline
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(points.get(0)));
+        Location point = points.get(0);
+        LatLng ll = new LatLng(point.getLatitude(), point.getLongitude());
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(ll));
 
     }
 }

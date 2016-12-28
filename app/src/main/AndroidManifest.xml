@@ -54,7 +54,10 @@
         </activity>
 
         <service android:name=".service.LocationService"/>
-
+        <service
+            android:name=".service.UpdateService"
+            android:exported="false">
+        </service>
     </application>
 
 </manifest>

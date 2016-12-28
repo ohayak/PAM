@@ -53,7 +53,7 @@ public class LocationService extends Service {
             @Override
             public void onLocationChanged(Location location) {
                 for (Tour entry : activeTours) {
-                    locationHelper.insertWithId(new LatLng(location.getLatitude(), location.getLongitude()), entry.getId());
+                    locationHelper.insertWithId(location, entry.getId());
                 }
             }
         };
