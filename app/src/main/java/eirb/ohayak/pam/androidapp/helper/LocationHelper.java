@@ -3,6 +3,7 @@ package eirb.ohayak.pam.androidapp.helper;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.location.Location;
+import android.util.Log;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.List;
  * Created by mrhyk on 22/12/2016.
  */
 public class LocationHelper extends TableHelper<Location> {
+    private static final String TAG = "LocationHelper";
     public static final String TABLE_NAME = "locations";
     public static final String KEY_ID = "locationid";
     public static final String KEY_LATITUDE = "latitude";
@@ -33,8 +35,8 @@ public class LocationHelper extends TableHelper<Location> {
         values.put(KEY_ID, id);
         values.put(KEY_LATITUDE, o.getLatitude());
         values.put(KEY_LONGITUDE, o.getLongitude());
-        database.insert(TABLE_NAME, null, values);
-        return id;
+        Log.d(TAG,"location inserted into tour: "+id);
+        return database.insert(TABLE_NAME, null, values);
     }
 
     @Override
@@ -44,7 +46,7 @@ public class LocationHelper extends TableHelper<Location> {
 
 
     public List<Location> getByTourId(long id) {
-        Cursor cursor = database.rawQuery("SELECT * FROM" + TABLE_NAME + "WHERE "+ KEY_ID +"=?",
+        Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ KEY_ID +"=?",
                 new String[]{String.valueOf(id)});
         List<Location> result = null;
         if (cursor.getCount() > 0) {
@@ -59,7 +61,7 @@ public class LocationHelper extends TableHelper<Location> {
     @Override
     protected Location cursorToItem(Cursor cursor, int position) {
         Location location = null;
-        if (cursor.getCount()-1 <= position) {
+        if (position <= cursor.getCount()-1) {
             cursor.moveToPosition(position);
             location.setLatitude(Double.parseDouble(cursor.getString(cursor.getColumnIndex(KEY_LATITUDE))));
             location.setLongitude(Double.parseDouble(cursor.getString(cursor.getColumnIndex(KEY_LONGITUDE))));

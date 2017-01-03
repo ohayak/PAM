@@ -14,6 +14,7 @@ import eirb.ohayak.pam.androidapp.object.Tour;
 import eirb.ohayak.pam.androidapp.helper.TourHelper;
 import eirb.ohayak.pam.androidapp.service.LocationService;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -26,8 +27,8 @@ public class TourActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tour);
         callIntent = getIntent();
-        FloatingActionButton next = (FloatingActionButton) findViewById(R.id.btn_save_tour);
-        next.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton save = (FloatingActionButton) findViewById(R.id.btn_save_tour);
+        save.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 startTour(view);
             }
@@ -68,5 +69,6 @@ public class TourActivity extends AppCompatActivity {
     public void stopTour(View view) {
         stopService(new Intent(TourActivity.this, LocationService.class));
     }
+
 
 }

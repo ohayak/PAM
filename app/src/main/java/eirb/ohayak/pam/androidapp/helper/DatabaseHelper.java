@@ -35,10 +35,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + "FOREIGN KEY ("+ TourHelper.KEY_USER_ID +") REFERENCES "+ UserHelper.TABLE_NAME +"("+ UserHelper.KEY_ID +"));";
 
     private static final String CREATE_TABLE_LOCATIONS = "CREATE TABLE "+ LocationHelper.TABLE_NAME + "("
-            + LocationHelper.KEY_ID + " INTEGER PRIMARY KEY,"
+            + "_id INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + LocationHelper.KEY_ID + " INTEGER,"
             + LocationHelper.KEY_LONGITUDE + " DOUBLE,"
-            + LocationHelper.KEY_LATITUDE + " DOUBLE,"
-            + "FOREIGN KEY ("+ LocationHelper.KEY_ID +") REFERENCES "+ TourHelper.TABLE_NAME +"("+ TourHelper.KEY_ID +"));";
+            + LocationHelper.KEY_LATITUDE + " DOUBLE );";
 
     private DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

@@ -4,7 +4,9 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import eirb.ohayak.pam.androidapp.object.Tour;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -54,7 +56,8 @@ public class TourHelper extends TableHelper<Tour> {
         values.put(KEY_TOPSPEED, o.getTopspeed());
         values.put(KEY_DETAILS, o.getDetails());
         values.put(KEY_USER_ID, o.getUserId());
-        database.update(TABLE_NAME, values, KEY_ID +"=?",o.getId());
+        database.update(TABLE_NAME, values, KEY_ID +"=?",
+                new String[]{Long.toString(o.getId())});
         return o.getId();
     }
 
@@ -81,16 +84,18 @@ public class TourHelper extends TableHelper<Tour> {
     @Override
     protected Tour cursorToItem(Cursor cursor, int position) {
         Tour tour = new Tour();
-        cursor.moveToPosition(position);
-        tour.setId(cursor.getLong(cursor.getColumnIndex(KEY_ID)));
-        tour.setName(cursor.getString(cursor.getColumnIndex(KEY_NAME)));
-        tour.setActive(Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(KEY_STATUS))));
-        tour.setEnd(cursor.getString(cursor.getColumnIndex(KEY_END)));
-        tour.setStart(cursor.getString(cursor.getColumnIndex(KEY_START)));
-        tour.setSpeed(Float.parseFloat(cursor.getString(cursor.getColumnIndex(KEY_SPEED))));
-        tour.setTopspeed(Float.parseFloat(cursor.getString(cursor.getColumnIndex(KEY_TOPSPEED))));
-        tour.setDetails(cursor.getString(cursor.getColumnIndex(KEY_DETAILS)));
-        tour.setLocations(lh.getByTourId(tour.getId()));
+        if (position <= cursor.getCount()-1) {
+            cursor.moveToPosition(position);
+            tour.setId(cursor.getLong(cursor.getColumnIndex(KEY_ID)));
+            tour.setName(cursor.getString(cursor.getColumnIndex(KEY_NAME)));
+            tour.setActive(Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(KEY_STATUS))));
+            tour.setEnd(cursor.getString(cursor.getColumnIndex(KEY_END)));
+            tour.setStart(cursor.getString(cursor.getColumnIndex(KEY_START)));
+            tour.setSpeed(Float.parseFloat(cursor.getString(cursor.getColumnIndex(KEY_SPEED))));
+            tour.setTopspeed(Float.parseFloat(cursor.getString(cursor.getColumnIndex(KEY_TOPSPEED))));
+            tour.setDetails(cursor.getString(cursor.getColumnIndex(KEY_DETAILS)));
+            tour.setLocations(lh.getByTourId(tour.getId()));
+        }
         return tour;
     }
 
@@ -98,5 +103,15 @@ public class TourHelper extends TableHelper<Tour> {
         if (instance == null)
             instance = new TourHelper();
         return instance;
+    }
+
+    public static String getDate(long milliSeconds, String dateFormat) {
+        // Create a DateFormatter object for displaying date in specified format.
+        SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
+
+        // Create a calendar object that will convert the date and time value in milliseconds to date.
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(milliSeconds);
+        return formatter.format(calendar.getTime());
     }
 }

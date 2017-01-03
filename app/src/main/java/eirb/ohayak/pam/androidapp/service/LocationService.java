@@ -8,7 +8,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
-import com.google.android.gms.maps.model.LatLng;
 import eirb.ohayak.pam.androidapp.activity.LoginActivity;
 import eirb.ohayak.pam.androidapp.object.Tour;
 import eirb.ohayak.pam.androidapp.helper.TourHelper;
@@ -29,6 +28,8 @@ public class LocationService extends Service {
     public static final int INIT_LIST_TOUR =1;
     public static final int END_TOUR =2;
 
+    private Location lastLocation;
+
     @Override
     public IBinder onBind(Intent arg0) {
         return null;
@@ -44,6 +45,7 @@ public class LocationService extends Service {
 
             @Override
             public void onProviderEnabled(String provider) {
+                lastLocation = locationMgr.getLastKnownLocation(provider);
             }
 
             @Override
@@ -53,13 +55,21 @@ public class LocationService extends Service {
             @Override
             public void onLocationChanged(Location location) {
                 for (Tour entry : activeTours) {
+                    lastLocation = location;
+                    float speed = location.getSpeed();
+                    float distance = lastLocation.distanceTo(location);
+                    entry.setSpeed(speed);
+                    if (entry.getTopspeed() < speed )
+                        entry.setTopspeed(speed);
+                    entry.setDistance(entry.getDistance()+distance);
                     locationHelper.insertWithId(location, entry.getId());
+                    tourHelper.update(entry);
                 }
             }
         };
         locationMgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        locationMgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 30000, 1, onLocationChange);
-        locationMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 30000, 1, onLocationChange);
+        locationMgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, onLocationChange);
+        locationMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, onLocationChange);
         instance = this;
     }
 

@@ -14,8 +14,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import eirb.ohayak.pam.androidapp.R;
+import eirb.ohayak.pam.androidapp.helper.LocationHelper;
 import eirb.ohayak.pam.androidapp.object.Tour;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -23,6 +25,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private List<Location> points;
     private Polyline line;
+    private LocationHelper lh = LocationHelper.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +33,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
         Intent intent = getIntent();
         Tour tour = intent.getParcelableExtra("tour");
-        points = tour.getLocations();
+        tour.setLocations(lh.getByTourId(tour.getId()));
+        if (tour.getLocations() == null)
+            points = new ArrayList<>(0);
+        else
+            points = tour.getLocations();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -58,9 +65,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             options.add(ll);
         }
         googleMap.addPolyline(options); //add Polyline
-        Location point = points.get(0);
-        LatLng ll = new LatLng(point.getLatitude(), point.getLongitude());
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(ll));
+        if (points.size() > 0) {
+            Location point = points.get(0);
+            LatLng ll = new LatLng(point.getLatitude(), point.getLongitude());
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(ll));
+        }
 
     }
 }

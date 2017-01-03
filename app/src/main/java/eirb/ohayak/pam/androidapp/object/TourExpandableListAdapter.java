@@ -11,15 +11,18 @@ import android.widget.Button;
 import android.widget.TextView;
 import eirb.ohayak.pam.androidapp.R;
 import eirb.ohayak.pam.androidapp.activity.MapsActivity;
+import eirb.ohayak.pam.androidapp.helper.TourHelper;
 import eirb.ohayak.pam.androidapp.object.Tour;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class TourExpandableListAdapter extends BaseExpandableListAdapter {
     private static final String TAG = "TourExpandableListAdapter";
     private Context context;
     private List<Tour> tourList;
+    private TourHelper th = TourHelper.getInstance();
 
     public TourExpandableListAdapter(Context context, List<Tour> tours) {
         this.context = context;
@@ -55,15 +58,25 @@ public class TourExpandableListAdapter extends BaseExpandableListAdapter {
                 saveTourButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //TODO
+                        tour.setActive(false);
+                        tour.setEnd(String.valueOf(Calendar.getInstance().getTimeInMillis()));
+                        th.update(tour);
                     }
                 });
             } else {
                 convertView = layoutInflater.inflate(R.layout.list_details, null);
+                TextView endDate = (TextView) convertView.findViewById(R.id.txt_end_date);
+                endDate.setText(TourHelper.getDate(Long.parseLong(tour.getEnd()),"dd/MM/yyyy hh:mm"));
             }
         }
-        TextView expandedListTextView = (TextView) convertView.findViewById(R.id.txt_date);
-        expandedListTextView.setText(tour.getStart());
+        TextView startDate = (TextView) convertView.findViewById(R.id.txt_start_date);
+        startDate.setText(TourHelper.getDate(Long.parseLong(tour.getStart()),"dd/MM/yyyy hh:mm"));
+        TextView distance = (TextView) convertView.findViewById(R.id.txt_distance);
+        distance.setText(Float.toString(tour.getDistance()));
+        TextView speed = (TextView) convertView.findViewById(R.id.txt_speed);
+        speed.setText(Float.toString(tour.getSpeed()));
+        TextView topspeed = (TextView) convertView.findViewById(R.id.txt_topspeed);
+        topspeed.setText(Float.toString(tour.getTopspeed()));
         Button showTourButton = (Button) convertView.findViewById(R.id.btn_show);
         showTourButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +91,7 @@ public class TourExpandableListAdapter extends BaseExpandableListAdapter {
         deleteTourButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               //TODO
+                //TODO
             }
         });
 

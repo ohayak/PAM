@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import eirb.ohayak.pam.androidapp.*;
@@ -23,6 +24,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST = 0;
     private static final int CREATE_TOUR = 0;
+    private static final String TAG = "MainActivity";
     private FloatingActionButton newTour;
     private ExpandableListView expandableListViewActive;
     private ExpandableListView expandableListViewOld;
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent tourIntent = new Intent(view.getContext(), TourActivity.class);
+                Log.d(TAG,"starting TourActivity");
                 startActivityForResult(tourIntent,CREATE_TOUR);
             }
         });
@@ -64,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadUserData() {
+        Log.d(TAG, "loading user data");
         Intent calling = getIntent();
         curentUser = (User) calling.getParcelableExtra(LoginActivity.KEY_CONNECTED_USER);
         TextView welcome = (TextView) findViewById(R.id.txt_welcome);
@@ -80,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         expandableListAdapterActive.notifyDataSetChanged();
         Intent intent = new Intent(getApplicationContext(), LocationService.class);
         intent.putExtra(LoginActivity.KEY_CONNECTED_USER, curentUser);
+        Log.d(TAG, "starting location service");
         startService(intent);
     }
 

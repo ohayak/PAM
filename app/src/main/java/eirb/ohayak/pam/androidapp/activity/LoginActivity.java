@@ -128,6 +128,7 @@ public class LoginActivity extends AppCompatActivity {
         _loginButton.setEnabled(true);
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.putExtra(KEY_CONNECTED_USER, user);
+        Log.d(TAG, "starting MainActivity");
         startActivity(intent);
         finish();
     }
