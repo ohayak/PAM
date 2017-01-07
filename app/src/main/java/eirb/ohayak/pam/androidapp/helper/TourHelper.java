@@ -22,6 +22,7 @@ public class TourHelper extends TableHelper<Tour> {
     public static final String KEY_START = "start";
     public static final String KEY_SPEED = "speed";
     public static final String KEY_TOPSPEED = "topspeed";
+    public static final String KEY_DISTANCE = "distance";
     public static final String KEY_DETAILS = "details";
     private static TourHelper instance = null;
     private static LocationHelper lh = LocationHelper.getInstance();
@@ -56,6 +57,7 @@ public class TourHelper extends TableHelper<Tour> {
         values.put(KEY_TOPSPEED, o.getTopspeed());
         values.put(KEY_DETAILS, o.getDetails());
         values.put(KEY_USER_ID, o.getUserId());
+        values.put(KEY_DISTANCE,o.getDistance());
         database.update(TABLE_NAME, values, KEY_ID +"=?",
                 new String[]{Long.toString(o.getId())});
         return o.getId();
@@ -114,5 +116,12 @@ public class TourHelper extends TableHelper<Tour> {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(milliSeconds);
         return formatter.format(calendar.getTime());
+    }
+
+
+    public void delete(long id) {
+        database.execSQL("DELETE FROM " + TABLE_NAME + " WHERE "+ KEY_ID +" = "+id);
+        LocationHelper.getInstance().delete(id);
+
     }
 }

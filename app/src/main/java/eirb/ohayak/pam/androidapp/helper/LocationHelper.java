@@ -77,4 +77,8 @@ public class LocationHelper extends TableHelper<Location> {
         }
         return instance;
     }
+
+    public void delete(long id) {
+        database.execSQL("DELETE FROM " + TABLE_NAME + " WHERE "+ KEY_ID +" = "+id);
+    }
 }

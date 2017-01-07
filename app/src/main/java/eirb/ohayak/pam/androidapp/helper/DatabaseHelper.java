@@ -27,10 +27,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + TourHelper.KEY_USER_ID + " INTEGER,"
             + TourHelper.KEY_NAME + " TEXT,"
             + TourHelper.KEY_STATUS + " TEXT,"
-            + TourHelper.KEY_END + " TEXT,"
-            + TourHelper.KEY_START + " TEXT,"
-            + TourHelper.KEY_SPEED + " TEXT,"
-            + TourHelper.KEY_TOPSPEED + " TEXT,"
+            + TourHelper.KEY_END + " INTEGER,"
+            + TourHelper.KEY_START + " INTEGER,"
+            + TourHelper.KEY_SPEED + " REAL,"
+            + TourHelper.KEY_TOPSPEED + " REAL,"
+            + TourHelper.KEY_DISTANCE + " REAL,"
             + TourHelper.KEY_DETAILS + " TEXT,"
             + "FOREIGN KEY ("+ TourHelper.KEY_USER_ID +") REFERENCES "+ UserHelper.TABLE_NAME +"("+ UserHelper.KEY_ID +"));";
 

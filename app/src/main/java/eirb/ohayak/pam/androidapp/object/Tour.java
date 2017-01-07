@@ -48,6 +48,7 @@ public class Tour implements Parcelable, Comparable<Tour> {
         details = in.readString();
         speed = in.readFloat();
         topspeed = in.readFloat();
+        distance = in.readFloat();
         locations = in.createTypedArrayList(Location.CREATOR);
     }
 
@@ -62,6 +63,7 @@ public class Tour implements Parcelable, Comparable<Tour> {
         dest.writeString(details);
         dest.writeFloat(speed);
         dest.writeFloat(topspeed);
+        dest.writeFloat(distance);
         dest.writeTypedList(locations);
     }
 

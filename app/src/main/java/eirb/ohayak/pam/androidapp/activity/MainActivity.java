@@ -1,13 +1,17 @@
 package eirb.ohayak.pam.androidapp.activity;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -30,19 +34,23 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton newTour;
     private ExpandableListView expandableListViewActive;
     private ExpandableListView expandableListViewOld;
+    private List<Tour> tours;
     private TourExpandableListAdapter expandableListAdapterActive;
     private TourExpandableListAdapter expandableListAdapterOld;
     private User curentUser;
+    private BroadcastReceiver messageReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         if (ContextCompat.checkSelfPermission(MainActivity.this,
-                Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        || ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this,
-                    new String[] { Manifest.permission.ACCESS_FINE_LOCATION },
+                    new String[] { Manifest.permission.ACCESS_FINE_LOCATION,  },
                     MY_PERMISSIONS_REQUEST);
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
 
         newTour = (FloatingActionButton) findViewById(R.id.btn_new_tour);
@@ -65,6 +73,13 @@ public class MainActivity extends AppCompatActivity {
         expandableListViewActive.setAdapter(expandableListAdapterActive);
         expandableListViewOld.setAdapter(expandableListAdapterOld);
 
+        LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(messageReceiver, new IntentFilter("refresh"));
+        messageReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                loadUserData();
+            }
+        };
         loadUserData();
 
     }
@@ -76,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         TextView welcome = (TextView) findViewById(R.id.txt_welcome);
         welcome.setText("Welcome "+ curentUser.getLastname());
         TourHelper th = TourHelper.getInstance();
-        List<Tour> tours = th.getByUserId(curentUser.getId());
+        tours = th.getByUserId(curentUser.getId());
         for (Tour entry : tours) {
             if (entry.isActive())
                 expandableListAdapterActive.addTour(entry);
@@ -91,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "starting location service");
         startService(intent);
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
