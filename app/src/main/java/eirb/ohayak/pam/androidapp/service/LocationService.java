@@ -57,6 +57,7 @@ public class LocationService extends Service {
             @Override
             public void onLocationChanged(Location location) {
                 Log.d(TAG, "location changed");
+                System.out.println("-----------------------------------------location changed");
                 for (Tour entry : activeTours) {
                     lastLocation = location;
                     float speed = location.getSpeed();

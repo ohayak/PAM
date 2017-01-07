@@ -66,8 +66,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Location point = points.get(0);
             LatLng ll = new LatLng(point.getLatitude(), point.getLongitude());
             googleMap.moveCamera(CameraUpdateFactory.newLatLng(ll));
-            googleMap.animateCamera(CameraUpdateFactory.zoomBy(13));
+
+            //googleMap.animateCamera(CameraUpdateFactory.zoomBy(13));
         }
+
 
     }
 }

@@ -17,6 +17,7 @@ import eirb.ohayak.pam.androidapp.service.LocationService;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class TourActivity extends AppCompatActivity {
     private Intent callIntent;
@@ -52,6 +53,7 @@ public class TourActivity extends AppCompatActivity {
         }
 
         Tour newTour = new Tour();
+        newTour.setUserId(callIntent.getLongExtra("user_id",0));
         newTour.setName(tourName);
         newTour.setDetails(tourDetails);
         newTour.setActive(true);

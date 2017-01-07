@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent tourIntent = new Intent(view.getContext(), TourActivity.class);
+                tourIntent.putExtra("user_id", curentUser.getId());
                 Log.d(TAG,"starting TourActivity");
                 startActivityForResult(tourIntent,CREATE_TOUR);
             }
