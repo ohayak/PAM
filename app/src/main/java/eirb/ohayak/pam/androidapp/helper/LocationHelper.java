@@ -49,6 +49,7 @@ public class LocationHelper extends TableHelper<Location> {
         Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ KEY_ID +"=?",
                 new String[]{String.valueOf(id)});
         List<Location> result = null;
+        cursor.moveToFirst();
         if (cursor.getCount() > 0) {
             result = new ArrayList<Location>();
             for (int i = 0; i < cursor.getCount(); i++) {
@@ -63,6 +64,7 @@ public class LocationHelper extends TableHelper<Location> {
         Location location = null;
         if (position <= cursor.getCount()-1) {
             cursor.moveToPosition(position);
+            location = new Location("database");
             location.setLatitude(Double.parseDouble(cursor.getString(cursor.getColumnIndex(KEY_LATITUDE))));
             location.setLongitude(Double.parseDouble(cursor.getString(cursor.getColumnIndex(KEY_LONGITUDE))));
         }

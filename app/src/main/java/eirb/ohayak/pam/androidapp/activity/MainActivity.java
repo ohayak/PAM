@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -18,6 +19,7 @@ import eirb.ohayak.pam.androidapp.object.TourExpandableListAdapter;
 import eirb.ohayak.pam.androidapp.object.User;
 import eirb.ohayak.pam.androidapp.service.LocationService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -83,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
         expandableListAdapterOld.notifyDataSetChanged();
         expandableListAdapterActive.notifyDataSetChanged();
         Intent intent = new Intent(getApplicationContext(), LocationService.class);
-        intent.putExtra(LoginActivity.KEY_CONNECTED_USER, curentUser);
+        intent.putExtra("request", LocationService.INIT_LIST_TOUR);
+        intent.putParcelableArrayListExtra("active_tours", expandableListAdapterActive.getTourList());
         Log.d(TAG, "starting location service");
         startService(intent);
     }

@@ -8,6 +8,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import eirb.ohayak.pam.androidapp.activity.LoginActivity;
 import eirb.ohayak.pam.androidapp.object.Tour;
 import eirb.ohayak.pam.androidapp.helper.TourHelper;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LocationService extends Service {
+    private static final String TAG = "LocationService";
     private static LocationManager locationMgr = null;
     private static List<Tour> activeTours = new ArrayList<Tour>();
     private static LocationHelper locationHelper = LocationHelper.getInstance();
@@ -54,6 +56,7 @@ public class LocationService extends Service {
 
             @Override
             public void onLocationChanged(Location location) {
+                Log.d(TAG, "location changed");
                 for (Tour entry : activeTours) {
                     lastLocation = location;
                     float speed = location.getSpeed();
@@ -68,8 +71,8 @@ public class LocationService extends Service {
             }
         };
         locationMgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        locationMgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, onLocationChange);
-        locationMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, onLocationChange);
+        locationMgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 0, onLocationChange);
+        locationMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, onLocationChange);
         instance = this;
     }
 
@@ -83,8 +86,7 @@ public class LocationService extends Service {
         }
 
         if (request == INIT_LIST_TOUR) {
-            User user = intent.getParcelableExtra(LoginActivity.KEY_CONNECTED_USER);
-            activeTours = tourHelper.getByUserId(user.getId());
+            activeTours = intent.getParcelableArrayListExtra("active_tours");
             return START_NOT_STICKY;
         }
 

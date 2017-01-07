@@ -21,14 +21,17 @@ import java.util.List;
 public class TourExpandableListAdapter extends BaseExpandableListAdapter {
     private static final String TAG = "TourExpandableListAdapter";
     private Context context;
-    private List<Tour> tourList;
+    private ArrayList<Tour> tourList;
     private TourHelper th = TourHelper.getInstance();
 
     public TourExpandableListAdapter(Context context, List<Tour> tours) {
         this.context = context;
         if (tours == null)
             tours = new ArrayList<Tour>(0);
-        this.tourList = tours;
+        this.tourList = (ArrayList<Tour>) tours;
+    }
+    public ArrayList<Tour> getTourList() {
+        return tourList;
     }
 
     public void addTour (Tour t) {

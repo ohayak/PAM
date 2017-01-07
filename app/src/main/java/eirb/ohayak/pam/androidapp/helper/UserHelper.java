@@ -35,8 +35,9 @@ public class UserHelper extends TableHelper<User> {
 
     @Override
     public User getById(long id) {
-        Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ KEY_ID +" =?;",
+        Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ KEY_ID +" =?",
                 new String[]{String.valueOf(id)});
+        cursor.moveToFirst();
         if (cursor.getCount() > 0)
             return cursorToItem(cursor,0);
         else
@@ -56,8 +57,9 @@ public class UserHelper extends TableHelper<User> {
     }
 
     public User getByEmail(String mEmail) {
-        Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ KEY_EMAIL +" =?;",
+        Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE "+ KEY_EMAIL +" =?",
                 new String[]{mEmail});
+        cursor.moveToFirst();
         if (cursor.getCount() > 0)
             return cursorToItem(cursor,0);
         else
