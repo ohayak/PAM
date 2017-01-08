@@ -36,6 +36,10 @@ public class TourExpandableListAdapter extends BaseExpandableListAdapter {
         return tourList;
     }
 
+    public void setTourList(ArrayList<Tour> l) {
+        tourList = l;
+    }
+
     public void addTour (Tour t) {
         tourList.add(t);
     }
@@ -70,41 +74,71 @@ public class TourExpandableListAdapter extends BaseExpandableListAdapter {
                         LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(intent);
                     }
                 });
+
+                Button showTourButton = (Button) convertView.findViewById(R.id.btn_show);
+                showTourButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent tourIntent = new Intent(view.getContext(), MapsActivity.class);
+                        tourIntent.putExtra("tour", tour);
+                        view.getContext().startActivity(tourIntent);
+                    }
+                });
+
+                Button deleteTourButton = (Button) convertView.findViewById(R.id.btn_delete);
+                deleteTourButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        th.delete(tour.getId());
+                        Intent intent = new Intent("refresh");
+                        LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(intent);
+                    }
+                });
+
+                TextView startDate = (TextView) convertView.findViewById(R.id.txt_start_date);
+                startDate.setText(TourHelper.getDate(Long.parseLong(tour.getStart()),"dd/MM/yyyy hh:mm"));
+                TextView distance = (TextView) convertView.findViewById(R.id.txt_distance);
+                distance.setText(Float.toString(tour.getDistance()));
+                TextView speed = (TextView) convertView.findViewById(R.id.txt_speed);
+                speed.setText(Float.toString(tour.getSpeed()));
+                TextView topspeed = (TextView) convertView.findViewById(R.id.txt_topspeed);
+                topspeed.setText(Float.toString(tour.getTopspeed()));
+
             } else {
                 convertView = layoutInflater.inflate(R.layout.list_details, null);
+
+                Button showTourButton = (Button) convertView.findViewById(R.id.btn_show);
+                showTourButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent tourIntent = new Intent(view.getContext(), MapsActivity.class);
+                        tourIntent.putExtra("tour", tour);
+                        view.getContext().startActivity(tourIntent);
+                    }
+                });
+
+                Button deleteTourButton = (Button) convertView.findViewById(R.id.btn_delete);
+                deleteTourButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        th.delete(tour.getId());
+                        Intent intent = new Intent("refresh");
+                        LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(intent);
+                    }
+                });
+
+                TextView startDate = (TextView) convertView.findViewById(R.id.txt_start_date);
+                startDate.setText(TourHelper.getDate(Long.parseLong(tour.getStart()),"dd/MM/yyyy hh:mm"));
                 TextView endDate = (TextView) convertView.findViewById(R.id.txt_end_date);
                 endDate.setText(TourHelper.getDate(Long.parseLong(tour.getEnd()),"dd/MM/yyyy hh:mm"));
+                TextView distance = (TextView) convertView.findViewById(R.id.txt_distance);
+                distance.setText(Float.toString(tour.getDistance()));
+                TextView speed = (TextView) convertView.findViewById(R.id.txt_speed);
+                speed.setText(Float.toString(tour.getSpeed()));
+                TextView topspeed = (TextView) convertView.findViewById(R.id.txt_topspeed);
+                topspeed.setText(Float.toString(tour.getTopspeed()));
             }
         }
-        Button showTourButton = (Button) convertView.findViewById(R.id.btn_show);
-        showTourButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent tourIntent = new Intent(view.getContext(), MapsActivity.class);
-                tourIntent.putExtra("tour", tour);
-                view.getContext().startActivity(tourIntent);
-            }
-        });
-
-        Button deleteTourButton = (Button) convertView.findViewById(R.id.btn_delete);
-        deleteTourButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                th.delete(tour.getId());
-                Intent intent = new Intent("refresh");
-                LocalBroadcastManager.getInstance(view.getContext()).sendBroadcast(intent);
-            }
-        });
-
-        TextView startDate = (TextView) convertView.findViewById(R.id.txt_start_date);
-        startDate.setText(TourHelper.getDate(Long.parseLong(tour.getStart()),"dd/MM/yyyy hh:mm"));
-        TextView distance = (TextView) convertView.findViewById(R.id.txt_distance);
-        distance.setText(Float.toString(tour.getDistance()));
-        TextView speed = (TextView) convertView.findViewById(R.id.txt_speed);
-        speed.setText(Float.toString(tour.getSpeed()));
-        TextView topspeed = (TextView) convertView.findViewById(R.id.txt_topspeed);
-        topspeed.setText(Float.toString(tour.getTopspeed()));
-
         return convertView;
     }
 

@@ -22,7 +22,6 @@ import java.util.List;
 public class TourActivity extends AppCompatActivity {
     private Intent callIntent;
     private TourHelper th = TourHelper.getInstance();
-    Calendar calendar = Calendar.getInstance();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +57,7 @@ public class TourActivity extends AppCompatActivity {
         newTour.setDetails(tourDetails);
         newTour.setActive(true);
         newTour.setLocations(new ArrayList<Location>(0));
-        newTour.setStart(String.valueOf(calendar.getTimeInMillis()));
+        newTour.setStart(String.valueOf(Calendar.getInstance().getTimeInMillis()));
         th.insert(newTour);
         callIntent.putExtra("newTour", newTour);
         intent.putExtra("request", LocationService.ADD_TOUR);

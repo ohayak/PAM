@@ -38,7 +38,14 @@ public class MainActivity extends AppCompatActivity {
     private TourExpandableListAdapter expandableListAdapterActive;
     private TourExpandableListAdapter expandableListAdapterOld;
     private User curentUser;
-    private BroadcastReceiver messageReceiver;
+    private BroadcastReceiver messageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            expandableListAdapterActive.setTourList(new ArrayList<Tour>());
+            expandableListAdapterOld.setTourList(new ArrayList<Tour>());
+            loadUserData();
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,13 +80,8 @@ public class MainActivity extends AppCompatActivity {
         expandableListViewActive.setAdapter(expandableListAdapterActive);
         expandableListViewOld.setAdapter(expandableListAdapterOld);
 
-        LocalBroadcastManager.getInstance(MainActivity.this).registerReceiver(messageReceiver, new IntentFilter("refresh"));
-        messageReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                loadUserData();
-            }
-        };
+        LocalBroadcastManager.getInstance(this).registerReceiver(messageReceiver, new IntentFilter("refresh"));
+
         loadUserData();
 
     }

@@ -58,8 +58,8 @@ public class TourHelper extends TableHelper<Tour> {
         values.put(KEY_DETAILS, o.getDetails());
         values.put(KEY_USER_ID, o.getUserId());
         values.put(KEY_DISTANCE,o.getDistance());
-        database.update(TABLE_NAME, values, KEY_ID +"=?",
-                new String[]{Long.toString(o.getId())});
+        database.update(TABLE_NAME, values, KEY_ID +" = ?",
+                new String[]{String.valueOf(o.getId())});
         return o.getId();
     }
 
@@ -97,6 +97,7 @@ public class TourHelper extends TableHelper<Tour> {
             tour.setSpeed(Float.parseFloat(cursor.getString(cursor.getColumnIndex(KEY_SPEED))));
             tour.setTopspeed(Float.parseFloat(cursor.getString(cursor.getColumnIndex(KEY_TOPSPEED))));
             tour.setDetails(cursor.getString(cursor.getColumnIndex(KEY_DETAILS)));
+            tour.setDistance(cursor.getFloat(cursor.getColumnIndex(KEY_DISTANCE)));
             tour.setLocations(lh.getByTourId(tour.getId()));
         }
         return tour;
@@ -122,6 +123,5 @@ public class TourHelper extends TableHelper<Tour> {
     public void delete(long id) {
         database.execSQL("DELETE FROM " + TABLE_NAME + " WHERE "+ KEY_ID +" = "+id);
         LocationHelper.getInstance().delete(id);
-
     }
 }
